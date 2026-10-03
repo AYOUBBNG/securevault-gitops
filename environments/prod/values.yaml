@@ -7,7 +7,6 @@ global:
   domain: securevault.com
 
 image:
-  registry: securevault-password-manager
   prefix: "securevault-password-manager-"	
   tag: latest
   pullPolicy: Never
@@ -45,10 +44,10 @@ resources:
 database:
   auth:
     name: securevault_auth
-    storage: 20Gi
+    storage: 5Gi
   vault:
     name: securevault_vault
-    storage: 20Gi
+    storage: 5Gi
 
 ingress:
   enabled: true
@@ -57,7 +56,7 @@ ingress:
   gatewayHost: api.securevault.com
 
 hpa:
-  enabled: true
+  enabled: false
   auth:
     minReplicas: 3
     maxReplicas: 10
