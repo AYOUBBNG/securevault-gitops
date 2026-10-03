@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: securevault-production
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/AYOUBBNG/securevault-gitops.git'
+    targetRevision: HEAD
+    path: charts/securevault-chart
+    helm:
+      valueFiles:
+        - ../../environments/prod/values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: securevault-prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
