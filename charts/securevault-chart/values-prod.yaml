@@ -1,0 +1,71 @@
+# ═══════════════════════════════════════
+# Production Values
+# ═══════════════════════════════════════
+global:
+  environment: production
+  namespace: securevault-prod
+  domain: securevault.com
+
+image:
+  registry: securevault-password-manager
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCounts:
+  discovery: 1
+  gateway: 3
+  auth: 3
+  vault: 3
+  frontend: 2
+
+resources:
+  backend:
+    requests:
+      cpu: "500m"
+      memory: "768Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+  frontend:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "300m"
+      memory: "256Mi"
+  database:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
+database:
+  auth:
+    name: securevault_auth
+    storage: 20Gi
+  vault:
+    name: securevault_vault
+    storage: 20Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  frontendHost: app.securevault.com
+  gatewayHost: api.securevault.com
+
+hpa:
+  enabled: true
+  auth:
+    minReplicas: 3
+    maxReplicas: 10
+    cpuTarget: 70
+  gateway:
+    minReplicas: 3
+    maxReplicas: 15
+    cpuTarget: 70
+  vault:
+    minReplicas: 3
+    maxReplicas: 10
+    cpuTarget: 70

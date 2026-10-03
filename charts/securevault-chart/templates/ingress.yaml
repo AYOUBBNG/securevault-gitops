@@ -1,0 +1,39 @@
+{{- if .Values.ingress.enabled }}
+# ═══════════════════════════════════════
+# Ingress (NGINX)
+# ═══════════════════════════════════════
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: securevault-ingress
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    # Frontend
+    - host: {{ .Values.ingress.frontendHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    # Gateway API
+    - host: {{ .Values.ingress.gatewayHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway-service
+                port:
+                  number: 8080
+{{- end }}

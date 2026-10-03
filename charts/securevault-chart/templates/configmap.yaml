@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: securevault-config
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+data:
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8761/eureka/"
+  SPRING_PROFILES_ACTIVE: "{{ .Values.global.environment }}"
+  POSTGRES_AUTH_HOST: "postgres-auth-db"
+  POSTGRES_VAULT_HOST: "postgres-vault-db"
+  POSTGRES_PORT: "5432"
+  POSTGRES_AUTH_DB: "{{ .Values.database.auth.name }}"
+  POSTGRES_VAULT_DB: "{{ .Values.database.vault.name }}"

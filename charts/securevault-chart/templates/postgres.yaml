@@ -1,0 +1,133 @@
+# ═══════════════════════════════════════
+# PostgreSQL Auth
+# ═══════════════════════════════════════
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-auth-db
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+spec:
+  serviceName: postgres-auth-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-auth-db
+  template:
+    metadata:
+      labels:
+        app: postgres-auth-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: "{{ .Values.database.auth.name }}"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: securevault-secrets
+                  key: POSTGRES_AUTH_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: securevault-secrets
+                  key: POSTGRES_AUTH_PASSWORD
+          volumeMounts:
+            - name: postgres-auth-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            {{- toYaml .Values.resources.database | nindent 12 }}
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-auth-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: {{ .Values.database.auth.storage }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-auth-db
+  namespace: {{ .Values.global.namespace }}
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres-auth-db
+  clusterIP: None
+---
+# ═══════════════════════════════════════
+# PostgreSQL Vault
+# ═══════════════════════════════════════
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-vault-db
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+spec:
+  serviceName: postgres-vault-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-vault-db
+  template:
+    metadata:
+      labels:
+        app: postgres-vault-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: "{{ .Values.database.vault.name }}"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: securevault-secrets
+                  key: POSTGRES_VAULT_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: securevault-secrets
+                  key: POSTGRES_VAULT_PASSWORD
+          volumeMounts:
+            - name: postgres-vault-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            {{- toYaml .Values.resources.database | nindent 12 }}
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-vault-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: {{ .Values.database.vault.storage }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-vault-db
+  namespace: {{ .Values.global.namespace }}
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres-vault-db
+  clusterIP: None

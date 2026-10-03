@@ -1,0 +1,89 @@
+# ═══════════════════════════════════════
+# Global Configuration
+# ═══════════════════════════════════════
+global:
+  environment: dev
+  namespace: securevault-prod
+  domain: securevault.local
+
+# ═══════════════════════════════════════
+# Image Repository
+# ═══════════════════════════════════════
+image:
+  registry: securevault-password-manager
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# ═══════════════════════════════════════
+# Replica Counts
+# ═══════════════════════════════════════
+replicaCounts:
+  discovery: 1
+  gateway: 2
+  auth: 2
+  vault: 2
+  frontend: 2
+
+# ═══════════════════════════════════════
+# Resources
+# ═══════════════════════════════════════
+resources:
+  backend:
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+  frontend:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "200m"
+      memory: "128Mi"
+  database:
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+# ═══════════════════════════════════════
+# Database
+# ═══════════════════════════════════════
+database:
+  auth:
+    name: securevault_auth
+    storage: 10Gi
+  vault:
+    name: securevault_vault
+    storage: 10Gi
+
+# ═══════════════════════════════════════
+# Ingress
+# ═══════════════════════════════════════
+ingress:
+  enabled: true
+  className: nginx
+  frontendHost: app.securevault.local
+  gatewayHost: api.securevault.local
+
+# ═══════════════════════════════════════
+# HPA
+# ═══════════════════════════════════════
+hpa:
+  enabled: true
+  auth:
+    minReplicas: 2
+    maxReplicas: 8
+    cpuTarget: 70
+  gateway:
+    minReplicas: 2
+    maxReplicas: 10
+    cpuTarget: 70
+  vault:
+    minReplicas: 2
+    maxReplicas: 8
+    cpuTarget: 70
