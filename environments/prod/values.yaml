@@ -8,8 +8,9 @@ global:
 
 image:
   registry: securevault-password-manager
+  prefix: "securevault-password-manager-"	
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Never
 
 replicaCounts:
   discovery: 1

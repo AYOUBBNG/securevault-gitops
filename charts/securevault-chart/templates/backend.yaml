@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: discovery-service
-          image: "{{ .Values.image.registry }}/discovery-service:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.prefix }}discovery-service:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8761
@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
         - name: gateway-service
-          image: "{{ .Values.image.registry }}/gateway-service:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.prefix }}gateway-service:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
@@ -144,7 +144,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: "{{ .Values.image.registry }}/auth-service:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.prefix }}auth-service:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8081
@@ -219,7 +219,7 @@ spec:
     spec:
       containers:
         - name: vault-service
-          image: "{{ .Values.image.registry }}/vault-service:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.prefix }}vault-service:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8082
