@@ -13,7 +13,7 @@ image:
 
 replicaCounts:
   discovery: 1
-  gateway: 1
+  gateway: 2
   auth: 1
   vault: 1
   frontend: 1
