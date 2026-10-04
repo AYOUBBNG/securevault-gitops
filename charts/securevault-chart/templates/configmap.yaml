@@ -7,7 +7,7 @@ metadata:
     {{- include "securevault.labels" . | nindent 4 }}
 data:
   EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8761/eureka/"
-  SPRING_PROFILES_ACTIVE: "{{ .Values.global.environment }}"
+  SPRING_PROFILES_ACTIVE: "prod"
   POSTGRES_AUTH_HOST: "postgres-auth-db"
   POSTGRES_VAULT_HOST: "postgres-vault-db"
   POSTGRES_PORT: "5432"
