@@ -2,7 +2,7 @@
 # Production Values
 # ═══════════════════════════════════════
 global:
-  environment: production
+  environment: prod
   namespace: securevault-prod
   domain: securevault.com
 
