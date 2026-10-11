@@ -54,6 +54,7 @@ metadata:
   labels:
     {{- include "securevault.labels" . | nindent 4 }}
     app: discovery-service
+    app.kubernetes.io/component: backend
 spec:
   type: ClusterIP
   ports:
@@ -122,6 +123,7 @@ metadata:
   labels:
     {{- include "securevault.labels" . | nindent 4 }}
     app: gateway-service
+    app.kubernetes.io/component: backend
 spec:
   type: ClusterIP
   ports:
@@ -202,6 +204,7 @@ metadata:
   labels:
     {{- include "securevault.labels" . | nindent 4 }}
     app: auth-service
+    app.kubernetes.io/component: backend
 spec:
   type: ClusterIP
   ports:
@@ -287,6 +290,7 @@ metadata:
   labels:
     {{- include "securevault.labels" . | nindent 4 }}
     app: vault-service
+    app.kubernetes.io/component: backend
 spec:
   type: ClusterIP
   ports:

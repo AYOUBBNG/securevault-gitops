@@ -16,3 +16,10 @@ Selector labels
 {{- define "securevault.selectorLabels" -}}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+{{/*
+Backend selector labels (machi frontend)
+*/}}
+{{- define "securevault.backendLabels" -}}
+app.kubernetes.io/part-of: securevault
+app.kubernetes.io/component: backend
+{{- end -}}
