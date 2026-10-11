@@ -51,6 +51,9 @@ kind: Service
 metadata:
   name: discovery-service
   namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+    app: discovery-service
 spec:
   type: ClusterIP
   ports:
@@ -116,6 +119,9 @@ kind: Service
 metadata:
   name: gateway-service
   namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+    app: gateway-service
 spec:
   type: ClusterIP
   ports:
@@ -193,6 +199,9 @@ kind: Service
 metadata:
   name: auth-service
   namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+    app: auth-service
 spec:
   type: ClusterIP
   ports:
@@ -275,6 +284,9 @@ kind: Service
 metadata:
   name: vault-service
   namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "securevault.labels" . | nindent 4 }}
+    app: vault-service
 spec:
   type: ClusterIP
   ports:
