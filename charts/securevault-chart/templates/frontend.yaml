@@ -24,7 +24,8 @@ spec:
           image: "{{ .Values.image.prefix }}frontend:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 80
+            - name: http
+              containerPort: 80
           resources:
             {{- toYaml .Values.resources.frontend | nindent 12 }}
           livenessProbe:
@@ -46,7 +47,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
+    - name: http
+      port: 80
       targetPort: 80
   selector:
     app: frontend
